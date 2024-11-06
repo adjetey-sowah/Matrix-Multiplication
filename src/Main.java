@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.Scanner;;
 
 public class Main {
 
@@ -10,27 +10,7 @@ public class Main {
      */
     
         public static void main(String[] args) {
-            int[][] A = {{12,2,4},{10,1,1}};
-            int[][] B = {{2,1,}, {1,2}, {1,1}};
-    
-            int rowsA = A.length;
-            int coslA = A[0].length;
-            int colsB = B[0].length; 
-            
-            int[][] C = new int[rowsA][colsB];
-    
-    
-            for (int i = 0; i < rowsA; i++){
-                
-                for (int j = 0; j < colsB; j++){
-    
-                    for (int k = 0; k < coslA;k++){
-                        C[i][j] += A[i][k] * B[k][j];
-                    }
-                }
-            }
-    
-            System.out.println(Arrays.deepToString(C));
+            mainMenu();
         }
     
     
@@ -62,22 +42,99 @@ public class Main {
     
     
             // Print the result
-            // printResult(resultMatrix);
+            printMatrix(resultMatrix);
             
         }
+
+
     
         public static void mainMenu(){
-            System.out.println("MATRIX CALCULATOR");
-            System.out.println("---------------------");
-            System.out.println();
-            System.out.println("Enter number of rows for the first matrix : ");
-            System.out.println("Enter number of columns for the first matrix : ");
-    
-            System.out.println("Enter number of rows for the second matrix : ");
-            System.out.println("Enter number of columns for the  matrix : ");
-    
             
+            Scanner input = new Scanner(System.in);
+
+            int colsA,rowsA,colsB,rowsB;
+
+            // Declare the matrices A and B
+            int [][] matrixA = null;
+            int [][] matrixB = null;
+            
+
+            
+        do {
+            // Input for matrix A
+            System.out.print("\nEnter the number of rows and columns for the first matrix (e.g., '2 3' for 2 rows and 3 columns): ");
+            String[] matrixADimensions = input.nextLine().split(" ");
+            rowsA = Integer.parseInt(matrixADimensions[0]);
+            colsA = Integer.parseInt(matrixADimensions[1]);
+
+            // Input for matrix B
+            System.out.print("Enter the number of rows and columns for the second matrix (e.g., '3 2' for 3 rows and 2 columns): ");
+            String[] matrixBDimensions = input.nextLine().split(" ");
+            rowsB = Integer.parseInt(matrixBDimensions[0]);
+            colsB = Integer.parseInt(matrixBDimensions[1]);
+
+            // Check if matrices can be multiplied
+            if (colsA != rowsB) {
+                System.out.println("\nError: The number of columns in the first matrix must equal the number of rows in the second matrix for multiplication.");
+                System.out.println("Please enter the dimensions again.");
+            } else {
+                System.out.println("\nThe matrices are compatible for multiplication.");
+            }
+
+            // Create matrices A and B with the given dimensions
+            matrixA = new int[rowsA][colsA];
+            matrixB = new int[rowsB][colsB];
+
+            // Input values for matrix A
+            System.out.println("Enter the values for the first matrix (A): ");
+            for(int i= 0; i < rowsA; i++){
+                for (int j = 0; j < colsA; j++){
+                    System.out.printf("Enter the value for A[%d][%d]: ", i+ 1 , j+1);
+                    matrixA[i][j] = input.nextInt();
+                }
+            }
+
+            
+
+
+            // Input values for matrix B
+            System.out.println("\nEnter the values for the second matrix (B): ");
+            for (int i = 0; i < rowsB; i++){
+                for (int j = 0; j < colsB; j++){
+                    System.out.printf("\nEnter value for B[%d][%d]: ", i+1, j +1);
+                    matrixB[i][j] = input.nextInt();
+                }
+            }
+
+
+        } while (colsA != rowsB);  // Repeat until the matrices are compatible
+
+        input.close();
+
+
+        // Call the function to multiply the matrices
+        multiplyMatrix(matrixA, matrixB);
+
+
+    }
+
+    
+    // Helper method to print a matrix
+    public static void printMatrix(int[][] matrix) {
+        System.out.println();
+        System.out.println("Solution");
+        System.out.println("----------");
+        System.out.println();
+        for (int i = 0; i < matrix.length; i++) {
+            System.out.println("");
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + "  ");
+            }
+            System.out.println();
         }
+
+    }
+
     
     
     }

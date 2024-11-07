@@ -14,37 +14,43 @@ public class Main {
         }
     
     
-        /**
-         * The multiplyMatrix function performs the actual calculations and 
-         * displays the result.
-         * 
-         * @param matrixA
-         * @param matrixB
-         */
-    
-        public static void multiplyMatrix(int[][] matrixA, int[][] matrixB){
-    
-            int rowsA = matrixA.length;
-            int colsA = matrixA[0].length;
-            int colsB = matrixB[0].length;
-    
-            int[][] resultMatrix = new int[rowsA][colsB];
-            
-            for (int i = 0; i < rowsA; i++){
+            /**
+            * Multiplies two compatible matrices and displays the result.
+            * 
+            * Given matrices `matrixA` and `matrixB`, this method calculates        their 
+            * product if the number of columns in `matrixA` equals the number       of rows in `matrixB`.
+            * The result is stored in `resultMatrix` and displayed.
+            * 
+            * @param matrixA The first matrix to multiply, with dimensions          [rowsA][colsA].
+            * @param matrixB The second matrix to multiply, with dimensions         [colsA][colsB].
+            * @throws IllegalArgumentException if matrices are incompatible for         multiplication.
+            */
+
+            public static void multiplyMatrix(int[][] matrixA, int[][] matrixB){
+        
+                int rowsA = matrixA.length;
+                int colsA = matrixA[0].length;
+                int colsB = matrixB[0].length;
+        
+                int[][] resultMatrix = new int[rowsA][colsB];
+
+                // Multiply matrices: row of A with column of B
                 
-                for (int j = 0; j < colsB; j++){
-    
-                    for (int k = 0; k < colsA; k++){
-                        resultMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+                for (int i = 0; i < rowsA; i++){
+                    
+                    for (int j = 0; j < colsB; j++){
+        
+                        for (int k = 0; k < colsA; k++){
+                            resultMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+                        }
                     }
                 }
+        
+        
+                // Print the result
+                printMatrix(resultMatrix);
+                
             }
-    
-    
-            // Print the result
-            printMatrix(resultMatrix);
-            
-        }
 
 
     
@@ -55,26 +61,27 @@ public class Main {
             int colsA,rowsA,colsB,rowsB;
 
             // Declare the matrices A and B
-            int [][] matrixA = null;
-            int [][] matrixB = null;
+            int [][] matrixA = null;        // To hold the values for matrix A
+            int [][] matrixB = null;        // to hold the elements for matrixB 
             
 
             
         do {
-            // Input for matrix A
+            //  Take input for the rows and column for matrix A
             System.out.print("\nEnter the number of rows and columns for the first matrix (e.g., '2 3' for 2 rows and 3 columns): ");
             String[] matrixADimensions = input.nextLine().split(" ");
-            rowsA = Integer.parseInt(matrixADimensions[0]);
+            rowsA = Integer.parseInt(matrixADimensions[0]);         
             colsA = Integer.parseInt(matrixADimensions[1]);
 
-            // Input for matrix B
+
+            // Take input for the rows and column for matrix B
             System.out.print("Enter the number of rows and columns for the second matrix (e.g., '3 2' for 3 rows and 2 columns): ");
             String[] matrixBDimensions = input.nextLine().split(" ");
             rowsB = Integer.parseInt(matrixBDimensions[0]);
             colsB = Integer.parseInt(matrixBDimensions[1]);
 
-            // Check if matrices can be multiplied
-            if (colsA != rowsB) {
+            // Check if matrices can be multiplied by comparing the number of columns for matrix A with the rows of colums B;
+            if (colsA != rowsB  ) {
                 System.out.println("\nError: The number of columns in the first matrix must equal the number of rows in the second matrix for multiplication.");
                 System.out.println("Please enter the dimensions again.");
             } else {
@@ -85,24 +92,50 @@ public class Main {
             matrixA = new int[rowsA][colsA];
             matrixB = new int[rowsB][colsB];
 
-            // Input values for matrix A
+            // Take the Input values for matrix A
             System.out.println("Enter the values for the first matrix (A): ");
             for(int i= 0; i < rowsA; i++){
                 for (int j = 0; j < colsA; j++){
-                    System.out.printf("Enter the value for A[%d][%d]: ", i+ 1 , j+1);
-                    matrixA[i][j] = input.nextInt();
+                    boolean validInput = false;
+                    while (!validInput) {
+                        System.out.printf("\nEnter the value for A[%d][%d]: ", i+ 1 , j+1);
+                        
+                        if (input.hasNextInt()){        // Check if input is an integer.
+                            matrixA[i][j] = input.nextInt();        
+                            validInput = true;      // Exit loop if input is valid
+                        }
+
+                        else {
+                            System.out.println("Invalid  input: Please enter a valid integer.");
+                            input.next();       // Consume the invalid input.
+                        }
+                        
+                    // matrixA[i][j] = input.nextInt();
                 }
             }
+        }
 
             
 
 
-            // Input values for matrix B
+            // Take the Input values for matrix B
             System.out.println("\nEnter the values for the second matrix (B): ");
             for (int i = 0; i < rowsB; i++){
                 for (int j = 0; j < colsB; j++){
-                    System.out.printf("\nEnter value for B[%d][%d]: ", i+1, j +1);
-                    matrixB[i][j] = input.nextInt();
+                    boolean validInput = false;
+                    while (!validInput) {
+                        System.out.printf("\nEnter value for B[%d][%d]: ", i+1, j +1);
+                        
+                        if (input.hasNextInt()) {  // check if input is an integer.
+                            matrixB[i][j] = input.nextInt();
+                            validInput = true;         // Exit loop if input is valid                   
+                        }
+                        else{
+                            System.out.println("Invalid input. Please enter a valid integer");
+                            input.next();       // Consume the invalid input;
+                        }
+                    }
+
                 }
             }
 
@@ -119,8 +152,13 @@ public class Main {
     }
 
     
-    // Helper method to print a matrix
-    public static void printMatrix(int[][] matrix) {
+        /**
+         * Prints a matrix.
+         * This helper method displays the matrix in a readable format.
+         * @param matrix The matrix to display.
+         */
+    
+        public static void printMatrix(int[][] matrix) {
         System.out.println();
         System.out.println("Solution");
         System.out.println("----------");
